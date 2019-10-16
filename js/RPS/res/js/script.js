@@ -1,6 +1,4 @@
-//give AI choices
-let choices = ['Rock', 'Paper', 'Scissor'];
-let computerChoice;
+const choices = ['Rock', 'Paper', 'Scissor', 'Lizard', 'Spock'];
 let wins = 0;
 let losses = 0;
 
@@ -10,104 +8,63 @@ document.getElementById('losses').innerHTML = losses;
 
 //makes the AI pick Rock Paper or Scissor
 
-function goComputer () {
-    computerChoice = choices[Math.floor(Math.random() * choices.length)];
-    console.log(computerChoice);
-    return computerChoice;
+function goComputer () {     
+    return Math.floor(Math.random() * choices.length);
 }
 
-//calling AI to make a move
 
-goComputer();
+function action(playerChoice) {
+    // get computer choice as a number
+    const computerChoice = goComputer();
 
-//rock options
-
-function userRock(){
-
-    if (computerChoice === choices[0]){
+    // check who won
+    // draw 
+    if (computerChoice === playerChoice) {
         document.getElementById('message').innerHTML = 'Draw';
     }
-
-    if (computerChoice === choices[1]){
-        losses++;
-        document.getElementById('losses').innerHTML = losses;
-        document.getElementById('message').innerHTML = 'AI picked paper you lose';
+    // Rock
+    if (computerChoice === 0 && (playerChoice === 2 || playerChoice == 3)) {
+        playerLooses(computerChoice);
+    } else if (playerChoice === 0 && (computerChoice === 2 || computerChoice == 3)) {
+        // dry win action
+        playerWins(playerChoice, computerChoice);
     }
-
-    if (computerChoice === choices[2]){
-        document.getElementById('rock').setAttribute('class', 'wins');
-        wins++
-        document.getElementById('wins').innerHTML = 'wins';
-        document.getElementById('message').innerHTML = 'AI picked scissor you win';
+    // paper 
+    if (computerChoice === 1 && (playerChoice === 0 || playerChoice == 4)) {
+        // dry loose action
+        playerLooses(computerChoice);
+    } else if (playerChoice === 1 && (computerChoice === 0 || computerChoice == 4)){
+        playerWins(playerChoice, computerChoice);
     }
-    goComputer();
+    // scissor
+    if (computerChoice === 2 && (playerChoice === 1 || playerChoice == 3)) {
+        playerLooses(computerChoice);
+    } else if (playerChoice === 2 && (computerChoice === 1 || computerChoice == 3)) {
+        playerWins(playerChoice, computerChoice);
+    }
+    // lizard
+    if (computerChoice === 3 && (playerChoice === 1 || playerChoice == 4)) {
+        playerLooses(computerChoice);
+    } else if (playerChoice === 3 && (computerChoice === 1 || computerChoice == 4)) {
+        playerWins(playerChoice, computerChoice);
+    }  
+    //spock
+    if (computerChoice === 4 && (playerChoice === 2 || playerChoice == 0)) {
+        playerLooses(computerChoice);
+    } else if (playerChoice === 4 && (computerChoice === 2 || computerChoice == 0)) {
+        playerWins(playerChoice, computerChoice);
+    }        
 }
 
+function playerLooses(computerChoice) {
+    losses++;
+    document.getElementById('losses').innerHTML = losses;
+    document.getElementById('message').innerHTML = `AI picked ${choices[computerChoice]} you lose`;
+}
 
-//Paper options
-function userPaper (id) {  
-  
-    if (computerChoice === choices[1]) {
-      document.getElementById("message").innerHTML = "Draw"; 
-    }
-    if (computerChoice === choices[2]) {
-      losses++;
-      document.getElementById("losses").innerHTML = losses;
-      document.getElementById("message").innerHTML = "AI picked scissor you lose";
-    }
-    if (computerChoice === choices[0]) {
-      wins++;
-      document.getElementById("wins").innerHTML = wins;
-      document.getElementById("message").innerHTML = "AI picked rock you win";
-    }
-    
-    goComputer();
-  }
-
-//scissor options
-function userScissor (id) {  
-  
-    if (computerChoice === choices[2]) {
-      document.getElementById("message").innerHTML = "Draw"; 
-    }
-    if (computerChoice === choices[0]) {
-      losses++;
-      document.getElementById("losses").innerHTML = losses;
-      document.getElementById("message").innerHTML = "AI picked rock you lose";
-    }
-    if (computerChoice === choices[1]) {
-      wins++;
-      document.getElementById("wins").innerHTML = wins;
-      document.getElementById("message").innerHTML = "AI picked paper you win";
-    }
-    
-    goComputer ();
-  }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
+function playerWins(playerChoice, computerChoice) {
+    wins++;
+    document.getElementById(choices[playerChoice].toLowerCase()).setAttribute('class', 'wins');
+    document.getElementById('wins').innerHTML = wins;
+    document.getElementById('message').innerHTML = `AI picked ${choices[computerChoice]} you win`;
+}
